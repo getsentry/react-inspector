@@ -1,6 +1,7 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import { ObjectValue } from './ObjectValue';
+import { theme } from '../styles/themes/chromeLight';
 
 describe('ObjectValue', () => {
   it('should render', () => {
@@ -74,6 +75,13 @@ describe('ObjectValue', () => {
     const tree = TestRenderer.create(<ObjectValue object={Object.create(null)} />).toJSON();
     expect(tree.type).toBe('span');
     expect(tree.children).toEqual(['Object']);
+  });
+
+  it('should render Error stacktrace', () => {
+    const tree = TestRenderer.create(<ObjectValue object={new Error('InvalidValue')} />).toJSON();
+    expect(tree.type).toBe('span');
+    expect(tree.props.style.color).toBe(theme.ERROR_COLOR);
+    expect(tree.children.join('\n').trim()).toMatch(/^at/);
   });
 
   /*

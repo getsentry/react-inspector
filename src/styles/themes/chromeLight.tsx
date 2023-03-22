@@ -18,6 +18,8 @@ export const theme = {
   OBJECT_VALUE_BOOLEAN_COLOR: 'rgb(28, 0, 207)',
   OBJECT_VALUE_FUNCTION_PREFIX_COLOR: 'rgb(13, 34, 170)',
 
+  ERROR_COLOR: 'rgb(255, 0, 0)',
+
   HTML_TAG_COLOR: 'rgb(168, 148, 166)',
   HTML_TAGNAME_COLOR: 'rgb(136, 18, 128)',
   HTML_TAGNAME_TEXT_TRANSFORM: 'lowercase',

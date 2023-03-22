@@ -33,6 +33,13 @@ export const ObjectValue: FC<any> = ({ object, styles }) => {
       if (object instanceof RegExp) {
         return <span style={mkStyle('objectValueRegExp')}>{object.toString()}</span>;
       }
+      if (object instanceof Error) {
+        const stackArray = typeof object.stack === 'string' && object.stack.split('\n');
+        // Drop the first line because it's the error message, only want the stack
+        const [, ...stack] = stackArray || [];
+        const stackString = stack ? stack.join('\n') : '';
+        return <span style={mkStyle('objectErrorValue')}>{stackString}</span>;
+      }
       if (Array.isArray(object)) {
         return <span>{`Array(${object.length})`}</span>;
       }

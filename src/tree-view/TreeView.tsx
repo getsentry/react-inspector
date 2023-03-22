@@ -4,24 +4,23 @@ import { TreeNode } from './TreeNode';
 import { DEFAULT_ROOT_PATH, hasChildNodes, getExpandedPaths } from './pathUtils';
 
 import { useStyles } from '../styles';
+import { ObjectValue } from '../object/ObjectValue';
 
 const ConnectedTreeNode = memo<any>((props) => {
   const { data, dataIterator, path, depth, nodeRenderer, onExpand } = props;
   const [expandedPaths, setExpandedPaths] = useContext(ExpandedPathsContext);
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
+  const isError = data instanceof Error;
+  const shouldShowArrow = nodeHasChildNodes || isError;
 
   const handleClick = useCallback(() => {
-    if (nodeHasChildNodes) {
+    if (nodeHasChildNodes || isError) {
       setExpandedPaths((prevExpandedPaths) => {
         const newExpandedPaths = {
           ...prevExpandedPaths,
           [path]: !expanded,
         };
-
-        if (typeof onExpand === 'function') {
-          onExpand(path, newExpandedPaths);
-        }
 
         return newExpandedPaths;
       });
@@ -32,11 +31,12 @@ const ConnectedTreeNode = memo<any>((props) => {
     }
   }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
 
+  console.log(isError);
   return (
     <TreeNode
       expanded={expanded}
       // show arrow anyway even if not expanded and not rendering children
-      shouldShowArrow={nodeHasChildNodes}
+      shouldShowArrow={shouldShowArrow}
       // show placeholder only for non root nodes
       shouldShowPlaceholder={depth > 0}
       // Render a node from name and data (or possibly other props like isNonenumerable)
@@ -46,8 +46,11 @@ const ConnectedTreeNode = memo<any>((props) => {
       onClick={handleClick}>
       {
         // only render if the node is expanded
-        expanded
-          ? [...dataIterator(data)].map(({ name, data, ...renderNodeProps }) => {
+        expanded ? (
+          isError ? (
+            <ObjectValue object={data} />
+          ) : (
+            [...dataIterator(data)].map(({ name, data, ...renderNodeProps }) => {
               return (
                 <ConnectedTreeNode
                   name={name}
@@ -62,7 +65,8 @@ const ConnectedTreeNode = memo<any>((props) => {
                 />
               );
             })
-          : null
+          )
+        ) : null
       }
     </TreeNode>
   );
