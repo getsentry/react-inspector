@@ -31,7 +31,6 @@ const ConnectedTreeNode = memo<any>((props) => {
     }
   }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
 
-  console.log(isError);
   return (
     <TreeNode
       expanded={expanded}
