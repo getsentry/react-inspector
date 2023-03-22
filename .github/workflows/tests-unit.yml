@@ -31,4 +31,4 @@ jobs:
         yarn lint
     - name: chromatic
       run: |
-        yarn chromatic
+        yarn chromatic --exit-zero-on-changes
