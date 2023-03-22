@@ -29,7 +29,7 @@ const ConnectedTreeNode = memo<any>((props) => {
         onExpand(path, { ...expandedPaths, [path]: !expanded });
       }
     }
-  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
+  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, isError, onExpand]);
 
   return (
     <TreeNode
