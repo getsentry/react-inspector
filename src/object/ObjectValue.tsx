@@ -35,9 +35,10 @@ export const ObjectValue: FC<any> = ({ object, styles }) => {
       }
       if (object instanceof Error) {
         const stackArray = typeof object.stack === 'string' && object.stack.split('\n');
-        // Drop the first line because it's the error message, only want the stack
-        const [, ...stack] = stackArray || [];
-        const stackString = stack ? stack.join('\n') : '';
+        // Drop the first line if it's the error message (Chrome only)
+        const [firstLine, ...stack] = stackArray || [];
+        const stackString =
+          firstLine === object.toString() && stack ? stack.join('\n') : stackArray ? stackArray.join('\n') : '';
         return <span style={mkStyle('objectErrorValue')}>{stackString}</span>;
       }
       if (Array.isArray(object)) {
