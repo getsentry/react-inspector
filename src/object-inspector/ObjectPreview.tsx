@@ -67,7 +67,7 @@ export const ObjectPreview: FC<any> = ({ data }) => {
     }
 
     if (object instanceof Error) {
-      const errorConstructorName = object.constructor ? object.constructor.name : 'Error';
+      const errorConstructorName = object.constructor ? object.constructor.name : object.name ? object.name : 'Error';
 
       return (
         <React.Fragment>
