@@ -5,7 +5,7 @@ const WILDCARD = '*';
 export function hasChildNodes(data, dataIterator) {
   // We pretend that Error objects have a child node so that the stack trace
   // can be expanded/collapsed.
-  return !dataIterator(data).next().done || data instanceof Error;
+  return !dataIterator(data).next().done || (data instanceof Error && data.stack !== undefined);
 }
 
 export const wildcardPathsFromLevel = (level) => {

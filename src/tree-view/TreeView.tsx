@@ -12,10 +12,9 @@ const ConnectedTreeNode = memo<any>((props) => {
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
   const isError = data instanceof Error;
-  const shouldShowArrow = nodeHasChildNodes || isError;
 
   const handleClick = useCallback(() => {
-    if (!nodeHasChildNodes && !isError) {
+    if (!nodeHasChildNodes) {
       return;
     }
 
@@ -27,13 +26,13 @@ const ConnectedTreeNode = memo<any>((props) => {
     if (typeof onExpand === 'function') {
       onExpand(path, { ...expandedPaths, [path]: !expanded });
     }
-  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, isError, onExpand]);
+  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
 
   return (
     <TreeNode
       expanded={expanded}
       // show arrow anyway even if not expanded and not rendering children
-      shouldShowArrow={shouldShowArrow}
+      shouldShowArrow={nodeHasChildNodes}
       // show placeholder only for non root nodes
       shouldShowPlaceholder={depth > 0}
       // Render a node from name and data (or possibly other props like isNonenumerable)
