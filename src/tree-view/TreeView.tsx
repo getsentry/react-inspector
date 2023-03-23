@@ -12,8 +12,9 @@ const ConnectedTreeNode = memo<any>((props) => {
   const expanded = !!expandedPaths[path];
 
   const handleClick = useCallback(
-    () =>
-      nodeHasChildNodes &&
+    () => {
+    if (nodeHasChildNodes) {
+
       setExpandedPaths((prevExpandedPaths) => {
         const newExpandedPaths = {
           ...prevExpandedPaths,
@@ -25,7 +26,13 @@ const ConnectedTreeNode = memo<any>((props) => {
         }
 
         return newExpandedPaths;
-      }),
+      });
+
+      if (typeof onExpand === 'function') {
+        onExpand(path, {...expandedPaths, [path]: !expanded});
+      }
+      }
+    },
     [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]
   );
 
@@ -54,6 +61,7 @@ const ConnectedTreeNode = memo<any>((props) => {
                   key={name}
                   dataIterator={dataIterator}
                   nodeRenderer={nodeRenderer}
+                onExpand={onExpand}
                   {...renderNodeProps}
                 />
               );
