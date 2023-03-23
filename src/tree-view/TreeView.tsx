@@ -15,19 +15,17 @@ const ConnectedTreeNode = memo<any>((props) => {
   const shouldShowArrow = nodeHasChildNodes || isError;
 
   const handleClick = useCallback(() => {
-    if (nodeHasChildNodes || isError) {
-      setExpandedPaths((prevExpandedPaths) => {
-        const newExpandedPaths = {
-          ...prevExpandedPaths,
-          [path]: !expanded,
-        };
+    if (!nodeHasChildNodes && !isError) {
+      return;
+    }
 
-        return newExpandedPaths;
-      });
+    setExpandedPaths((prevExpandedPaths) => ({
+      ...prevExpandedPaths,
+      [path]: !expanded,
+    }));
 
-      if (typeof onExpand === 'function') {
-        onExpand(path, { ...expandedPaths, [path]: !expanded });
-      }
+    if (typeof onExpand === 'function') {
+      onExpand(path, { ...expandedPaths, [path]: !expanded });
     }
   }, [nodeHasChildNodes, setExpandedPaths, path, expanded, isError, onExpand]);
 
