@@ -1,5 +1,5 @@
 {
-  "name": "react-inspector",
+  "name": "@sentry-internal/react-inspector",
   "version": "6.0.1",
   "description": "Power of Browser DevTools inspectors right inside your React app",
   "keywords": [
