@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useLayoutEffect, useState, memo } from 'react';
+import React, { useContext, useCallback, useLayoutEffect, useState, memo, MouseEvent } from 'react';
 import { ExpandedPathsContext } from './ExpandedPathsContext';
 import { TreeNode } from './TreeNode';
 import { DEFAULT_ROOT_PATH, hasChildNodes, getExpandedPaths } from './pathUtils';
@@ -13,20 +13,23 @@ const ConnectedTreeNode = memo<any>((props) => {
   const expanded = !!expandedPaths[path];
   const isError = data instanceof Error;
 
-  const handleClick = useCallback(() => {
-    if (!nodeHasChildNodes) {
-      return;
-    }
+  const handleClick = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (!nodeHasChildNodes) {
+        return;
+      }
 
-    setExpandedPaths((prevExpandedPaths) => ({
-      ...prevExpandedPaths,
-      [path]: !expanded,
-    }));
+      setExpandedPaths((prevExpandedPaths) => ({
+        ...prevExpandedPaths,
+        [path]: !expanded,
+      }));
 
-    if (typeof onExpand === 'function') {
-      onExpand(path, { ...expandedPaths, [path]: !expanded });
-    }
-  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
+      if (typeof onExpand === 'function') {
+        onExpand(path, { ...expandedPaths, [path]: !expanded }, e);
+      }
+    },
+    [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]
+  );
 
   return (
     <TreeNode
