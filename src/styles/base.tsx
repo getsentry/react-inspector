@@ -47,6 +47,9 @@ export const createTheme = (theme: any) => ({
     },
     arrayMaxProperties: theme.OBJECT_PREVIEW_ARRAY_MAX_PROPERTIES,
     objectMaxProperties: theme.OBJECT_PREVIEW_OBJECT_MAX_PROPERTIES,
+    errorMessage: {
+      color: theme.ERROR_COLOR,
+    },
   },
 
   ObjectName: {
@@ -86,6 +89,10 @@ export const createTheme = (theme: any) => ({
     },
     objectValueFunctionName: {
       fontStyle: 'italic',
+    },
+    objectErrorValue: {
+      color: theme.ERROR_COLOR,
+      whiteSpace: 'pre-wrap',
     },
   },
 

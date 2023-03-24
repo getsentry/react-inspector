@@ -37,6 +37,11 @@ storiesOf('Null', module).add('Null', () => <Inspector data={null} />);
 
 storiesOf('Symbols', module).add('test', () => <Inspector data={Symbol.for('test')} />);
 
+storiesOf('Error', module).add('error', () => {
+  const error = new Error('InvalidData');
+  return <Inspector data={error} />;
+});
+
 // Arrays
 storiesOf('Arrays', module)
   .add('Empty Array', () => <Inspector data={[]} />)

@@ -3,7 +3,9 @@ export const DEFAULT_ROOT_PATH = '$';
 const WILDCARD = '*';
 
 export function hasChildNodes(data, dataIterator) {
-  return !dataIterator(data).next().done;
+  // We pretend that Error objects have a child node so that the stack trace
+  // can be expanded/collapsed.
+  return !dataIterator(data).next().done || (data instanceof Error && data.stack !== undefined);
 }
 
 export const wildcardPathsFromLevel = (level) => {

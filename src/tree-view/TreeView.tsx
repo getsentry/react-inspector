@@ -1,36 +1,35 @@
-import React, { useContext, useCallback, useLayoutEffect, useState, memo } from 'react';
+import React, { useContext, useCallback, useLayoutEffect, useState, memo, MouseEvent } from 'react';
 import { ExpandedPathsContext } from './ExpandedPathsContext';
 import { TreeNode } from './TreeNode';
 import { DEFAULT_ROOT_PATH, hasChildNodes, getExpandedPaths } from './pathUtils';
 
 import { useStyles } from '../styles';
+import { ObjectValue } from '../object/ObjectValue';
 
 const ConnectedTreeNode = memo<any>((props) => {
   const { data, dataIterator, path, depth, nodeRenderer, onExpand } = props;
   const [expandedPaths, setExpandedPaths] = useContext(ExpandedPathsContext);
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
+  const isError = data instanceof Error;
 
-  const handleClick = useCallback(() => {
-    if (nodeHasChildNodes) {
-      setExpandedPaths((prevExpandedPaths) => {
-        const newExpandedPaths = {
-          ...prevExpandedPaths,
-          [path]: !expanded,
-        };
+  const handleClick = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (!nodeHasChildNodes) {
+        return;
+      }
 
-        if (typeof onExpand === 'function') {
-          onExpand(path, newExpandedPaths);
-        }
-
-        return newExpandedPaths;
-      });
+      setExpandedPaths((prevExpandedPaths) => ({
+        ...prevExpandedPaths,
+        [path]: !expanded,
+      }));
 
       if (typeof onExpand === 'function') {
-        onExpand(path, { ...expandedPaths, [path]: !expanded });
+        onExpand(path, { ...expandedPaths, [path]: !expanded }, e);
       }
-    }
-  }, [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]);
+    },
+    [nodeHasChildNodes, setExpandedPaths, path, expanded, onExpand]
+  );
 
   return (
     <TreeNode
@@ -46,8 +45,11 @@ const ConnectedTreeNode = memo<any>((props) => {
       onClick={handleClick}>
       {
         // only render if the node is expanded
-        expanded
-          ? [...dataIterator(data)].map(({ name, data, ...renderNodeProps }) => {
+        expanded ? (
+          isError ? (
+            <ObjectValue object={data} />
+          ) : (
+            [...dataIterator(data)].map(({ name, data, ...renderNodeProps }) => {
               return (
                 <ConnectedTreeNode
                   name={name}
@@ -62,7 +64,8 @@ const ConnectedTreeNode = memo<any>((props) => {
                 />
               );
             })
-          : null
+          )
+        ) : null
       }
     </TreeNode>
   );
