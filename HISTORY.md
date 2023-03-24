@@ -1,4 +1,5 @@
-## Unreleased
+## 6.0.1-2
+
 - Add `onExpand` callback for `<ObjectInspector>`, called when objects are expanded *and* collapsed.
 
 ## 6.0.0 (04/07/2022)
