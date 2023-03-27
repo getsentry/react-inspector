@@ -40,7 +40,7 @@ jobs:
       with:
         node-version: 16
         cache: 'yarn'
-    - run: yarn --production --frozen-lockfile
+    - run: yarn
     - run: yarn build
     - run: yarn pack
     - name: Upload Artifacts
