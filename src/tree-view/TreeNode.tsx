@@ -25,15 +25,14 @@ export const TreeNode: FC<any> = memo((props) => {
 
   const styles = useStyles('TreeNode');
   const NodeRenderer = nodeRenderer;
+  const isArrowVisible = shouldShowArrow || Children.count(children) > 0;
 
   return (
     <li aria-expanded={expanded} role="treeitem" style={styles.treeNodeBase} title={title}>
       <div style={styles.treeNodePreviewContainer} onClick={onClick}>
-        {shouldShowArrow || Children.count(children) > 0 ? (
-          <Arrow expanded={expanded} styles={styles.treeNodeArrow} />
-        ) : (
-          shouldShowPlaceholder && <span style={styles.treeNodePlaceholder}>&nbsp;</span>
-        )}
+        {isArrowVisible || shouldShowPlaceholder ? (
+          <Arrow expanded={expanded} styles={isArrowVisible ? styles.treeNodeArrow : styles.treeNodePlaceholder} />
+        ) : null}
         <NodeRenderer {...props} />
       </div>
 

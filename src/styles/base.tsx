@@ -120,11 +120,17 @@ export const createTheme = (theme: any) => ({
     },
     treeNodePreviewContainer: {},
     treeNodePlaceholder: {
+      base: {
+
       whiteSpace: 'pre',
+      // Width of arrow can differ from nbsp to font customizations,
+      // always render arrow so that we can have consistent placeholder widths.
+      visibility: 'hidden',
 
       fontSize: theme.ARROW_FONT_SIZE,
       marginRight: theme.ARROW_MARGIN_RIGHT,
       ...unselectable,
+      }
     },
     treeNodeArrow: {
       base: {
