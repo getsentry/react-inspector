@@ -8,7 +8,7 @@
       "rootDir": ".",
       "removeComments": true,
       "noImplicitAny": false,
-      "noEmit": true,
+      "noEmit": false,
       "pretty": true,
       "skipLibCheck": true,
       "strict": true,
