@@ -42,7 +42,16 @@ export const getExpandedPaths = (data, dataIterator, expandPaths, expandLevel, p
             }
           }
         } else {
-          const value = curData[key];
+          let value = curData[key];
+
+          if (curData.nodeType === Node.ELEMENT_NODE && curData.childNodes) {
+            const splitKey = key.split('-');
+            const tagName = splitKey.slice(0, -1).join('-');
+            const index = parseInt(splitKey.slice(-1), 10);
+            value = curData.childNodes[index];
+            value = value?.tagName === tagName ? value : undefined;
+          }
+
           if (hasChildNodes(value, dataIterator)) {
             populatePaths(value, `${curPath}.${key}`, depth + 1);
           }

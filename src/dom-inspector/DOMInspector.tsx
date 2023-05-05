@@ -20,7 +20,7 @@ const domIterator = function* (data: any) {
       if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length === 0) continue;
 
       yield {
-        name: `${node.tagName}[${i}]`,
+        name: `${node.tagName}-${i}`,
         data: node,
       };
     }

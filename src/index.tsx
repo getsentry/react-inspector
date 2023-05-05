@@ -16,7 +16,11 @@ export { TableInspector, ObjectInspector, ObjectLabel, ObjectPreview, ObjectRoot
 import React, { ComponentProps, FC } from 'react';
 import isDOM from 'is-dom';
 
-export const Inspector: FC<TableInspectorProps | ObjectInspectorProps> = ({ table = false, data, ...rest }) => {
+export const Inspector: FC<TableInspectorProps | ObjectInspectorProps | DomInspectorProps> = ({
+  table = false,
+  data,
+  ...rest
+}) => {
   if (table) {
     return <TableInspector data={data} {...rest} />;
   }
@@ -30,5 +34,8 @@ interface TableInspectorProps extends ComponentProps<typeof TableInspector> {
   table: true;
 }
 interface ObjectInspectorProps extends ComponentProps<typeof ObjectInspector> {
+  table: false;
+}
+interface DomInspectorProps extends ComponentProps<typeof DOMInspector> {
   table: false;
 }
