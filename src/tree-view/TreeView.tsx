@@ -5,13 +5,14 @@ import { DEFAULT_ROOT_PATH, hasChildNodes, getExpandedPaths } from './pathUtils'
 
 import { useStyles } from '../styles';
 import { ObjectValue } from '../object/ObjectValue';
+import { isError } from '../utils/isError';
 
 const ConnectedTreeNode = memo<any>((props) => {
   const { data, dataIterator, path, depth, nodeRenderer, onExpand } = props;
   const [expandedPaths, setExpandedPaths] = useContext(ExpandedPathsContext);
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
-  const isError = data instanceof Error;
+  const dataIsError = isError(data);
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
@@ -46,7 +47,7 @@ const ConnectedTreeNode = memo<any>((props) => {
       {
         // only render if the node is expanded
         expanded ? (
-          isError ? (
+          dataIsError ? (
             <ObjectValue object={data} />
           ) : (
             [...dataIterator(data)].map(({ name, data, ...renderNodeProps }) => {

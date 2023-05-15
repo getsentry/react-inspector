@@ -7,6 +7,7 @@ import { useStyles } from '../styles';
 
 import { hasOwnProperty } from '../utils/objectPrototype';
 import { getPropertyValue } from '../utils/propertyUtils';
+import { isError } from '../utils/isError';
 
 /* intersperse arr with separator */
 function intersperse(arr: any[], sep: string) {
@@ -66,7 +67,7 @@ export const ObjectPreview: FC<any> = ({ data }) => {
       }
     }
 
-    if (object instanceof Error) {
+    if (isError(object)) {
       const errorConstructorName = object.constructor ? object.constructor.name : object.name ? object.name : 'Error';
 
       return (

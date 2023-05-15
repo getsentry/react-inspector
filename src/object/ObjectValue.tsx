@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { useStyles } from '../styles';
+import { isError } from '../utils/isError';
 
 /**
  * A short description of the object values.
@@ -33,7 +34,7 @@ export const ObjectValue: FC<any> = ({ object, styles }) => {
       if (object instanceof RegExp) {
         return <span style={mkStyle('objectValueRegExp')}>{object.toString()}</span>;
       }
-      if (object instanceof Error) {
+      if (isError(object)) {
         const stackArray = typeof object.stack === 'string' && object.stack.split('\n');
         // Drop the first line if it's the error message (Chrome only)
         const [firstLine, ...stack] = stackArray || [];
